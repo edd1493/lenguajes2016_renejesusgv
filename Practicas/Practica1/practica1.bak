@@ -1,0 +1,32 @@
+#lang plai
+#|(test <result-expr> <expected-expr>)|#
+
+
+
+
+(define (POW z w)
+  (if (= w 0)
+      1
+  (* z (POW z (- w 1)))))
+
+(test (POW 1 0) 1)
+(test (POW 2 1) 2)
+(test (POW 5 5) 3125)
+(test (POW 100 20) 10000000000000000000000000000000000000000)
+(test (POW 7 7) 823543)    
+                   
+
+(define (average lista)
+  (empty? lista)
+  0
+  (/ suma(lista) length(lista)))
+
+(define (suma lista)
+  ((empty? lista) 0)
+  ((empty? (cdr lista)) (car lista))
+  (+ (car lista) (suma(cdr lista))))
+
+(suma '(1 2 3))
+
+
+  
