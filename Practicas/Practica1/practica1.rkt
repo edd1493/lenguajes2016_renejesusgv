@@ -77,3 +77,15 @@ el predicado, regrese falso|#
     [(empty? l) empty]
     [(eq? (p (car l)) #t) (cons (car l) (mfilter p (cdr l)))]
     [else (mfilter p (cdr l))]))
+    
+
+#|any and every |#
+
+(define (any? p? list)
+  (if (empty? list) #f
+  (or (p? (car list)) (any? p? (cdr list)))))
+
+(define (every? p? list)
+  (if (empty? list) #t
+  (and (p? (car list)) (any? p? (cdr list)))))
+
