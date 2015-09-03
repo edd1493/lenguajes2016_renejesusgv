@@ -31,12 +31,36 @@
 (test (average '(10 10 10 10 10 10)) 10)
 (test (average '(0 6 4 0)) 2.5)
 
-#|
-(test (primes 5) '(2 3 5))
-(test (primes 100) '(muchos primos))
-(test (primes 1000) '(muchos mas primos))
-(test (primes 0) '())
-(test (primes 2) '(2))|#
+;función auxiliar que crea una lista hasta el entero n
+(define (until n)
+  (cond
+    [(= n 0) '()]
+    [else (cons n (until (- n 1)))]))
+;función auxiliar que busca divisores de un número n
+(define (criba list n)
+  (cond
+    [(empty? list) '()]
+    [(integer? (/ n (car list))) (cons (car list) (criba (cdr list) n))]
+    [else (criba (cdr list) n)]))
+;función auxiliar que crea una lista de divisores
+(define (listdiv n)
+  (criba (until n) n))
+
+;función auxiliar que dice si un número es primo
+(define (prime? x)
+  (= 2 (length (listdiv x))))
+
+(define (primes x)
+  (cond
+    [(= x 1) '()]
+    [(prime? x) (cons x (primes (- x 1)))]
+    [else (primes (- x 1))]))
+
+(test (primes 30) '(29 23 19 17 13 11 7 5 3 2))
+(test (primes 15) '(13 11 7 5 3 2))
+(test (primes 11) '(11 7 5 3 2)) 
+(test (primes 4) '(3 2)) 
+(test (primes 1) '()) 
 
 (define (zip list1 list2)
   (if (or (empty? list1) (empty? list2))
