@@ -30,7 +30,10 @@
   (2D-Point (n number?) (m number?)))
 
 ;5.-Figure
-
+(define-type Figure
+  [Circle (n 2D-Point?) (m number?)]
+  [Square (n 2D-Point?) (m number?)]
+  [Rectangle (n 2D-Point?) (m number?) (o number?)])
 
 ;------------------------------------------------------------------------------------------------------------------------------------------
 ;SECCION 2
