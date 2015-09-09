@@ -3,9 +3,8 @@
 
 
 ;1.- MArray
-(define-type Arreglo
-  [MArreglo (n number?)
-            (l (listof number?))])
+(define-type Array
+  [MArray (n number?) (l list?)])
 
 ;(MArreglo 4 (list 1 2 3))
 
@@ -26,6 +25,11 @@
 ;(HVaciaN)
 ;(NodoN 1 (list (HVaciaN)(HVaciaN)(HVaciaN)))
 
+;4.-Position
+(define-type Position
+  (2D-Point (n number?) (m number?)))
+
+;5.-Figure
 
 
 ;------------------------------------------------------------------------------------------------------------------------------------------
@@ -39,11 +43,11 @@
     [(= count pos) (cons val (cdr l))]))
 
 (define (setvalueA ar pos val)
-  (if (not(Arreglo? ar))
+  (if (not(Array? ar))
       (error 'setvalueA "Unknown Type")
-      (if (> pos (- (MArreglo-n ar) 1))
+      (if (> pos (- (MArray-n ar) 1))
           (error 'setvalueA "Out of bounds")
-          (coloca (MArreglo-l ar) pos val 0))))
+          (coloca (MArray-l ar) pos val 0))))
 
 ;(define ar (MArreglo 5 '(0 0 0 0 0)))
 ;(setvalueA ar 2 4)
@@ -89,3 +93,10 @@
      (+ 1 (lengthML (MCons-rest ml)))))
 ;(lengthML (LVacia))
 ;(lengthML (MCons 7 (MCons 4 (MCons 5 (MCons 1 (LVacia))))))
+
+
+
+
+
+
+
