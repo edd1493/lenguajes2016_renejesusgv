@@ -115,6 +115,7 @@
 (define-type Coordinates
 [GPS (lat number?)
 (long number?)])
+
 (define-type Location
 [building (name string?)
 (loc GPS?)])
@@ -142,13 +143,24 @@
 ;11.-building-at-distance
 
 ;12.-area
+(define (area figure)
+    (type-case Figure figure
+      (Circle (point m) (* pi (expt m 2)))
+      (Rectangle (point m o)(* m o))
+      (Square(point m)(* m m))))
 
 ;13.-in-figure?
 
+#|(define (in-figure? figure point)
+  
+ (type-case Position point
+  (2D-Point(x y) 
+   (type-case Figure figure
+     (Square (point m)(if  )    )
+    
+     ))))
 
-
-
-
+|#
 
 
 
