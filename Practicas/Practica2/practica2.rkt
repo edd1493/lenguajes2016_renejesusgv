@@ -1,6 +1,9 @@
 #lang plai 
 
-
+;funcion que nos dice si algo es un atomo de racket
+(define atom?
+  (lambda (x)
+    (and (not (pair? x)) (not (null? x)))))
 
 ;1.- MArray
 (define-type Array
@@ -10,9 +13,11 @@
 
 ;2.-LIST
 (define-type MLista
-  [LVacia]
-  [MCons (n number?)
-         (rest MLista?)])
+  [MEmpty]
+  [MCons(n atom?)(rest MLista?)])
+
+(test (MEmpty) (MEmpty))
+(test (MCons 1 (MCons 2 (MCons 3 (MEmpty)))) (MCons 1 (MCons 2 (MCons 3 (MEmpty)))))
 
 ;(MCons 7 (MCons 4 (MCons 10 (LVacia))))
 
@@ -57,18 +62,22 @@
 ;(setvalueA ar 4 4)
 ;(setvalueA ar 5 4)
 
+;2.-MArray2MList
+
+
+
 ;3-PrintML
 (define (printML ml)
-  (if (LVacia? ml)
+  (if (MEmpty? ml)
       "[]"
-      (if(LVacia? (MCons-rest ml))
+      (if(MEmpty? (MCons-rest ml))
         (string-append "[" (~a (MCons-n ml)) "]")
          (string-append "[" (auxPrint ml) "]"))))
  
 (define (auxPrint ml)
-  (if (LVacia? ml)
+  (if (MEmpty? ml)
       ""
-      (if(LVacia? (MCons-rest ml))
+      (if(MEmpty? (MCons-rest ml))
          (string-append (~a (MCons-n ml)))
          (string-append (~a (MCons-n ml)) ", " (auxPrint (MCons-rest ml))))))
 
@@ -80,7 +89,7 @@
 
 ;4-ConcatMl
 (define (concatML ml1 ml2)
-  (if(LVacia? ml1)
+  (if(MEmpty? ml1)
      ml2
       (MCons (MCons-n ml1) (concatML (MCons-rest ml1) ml2))))
 
@@ -91,11 +100,52 @@
 
 ;5-lengthML
 (define (lengthML ml)
-  (if(LVacia? ml)
+  (if(MEmpty? ml)
      0
      (+ 1 (lengthML (MCons-rest ml)))))
 ;(lengthML (LVacia))
 ;(lengthML (MCons 7 (MCons 4 (MCons 5 (MCons 1 (LVacia))))))
+
+;6.-mapML
+
+;7.-Filter
+
+;---se definen los siguientes tipos de datos y valores-----------
+
+(define-type Coordinates
+[GPS (lat number?)
+(long number?)])
+(define-type Location
+[building (name string?)
+(loc GPS?)])
+
+
+;; Coordenadas GPS
+(define gps-satelite (GPS 19.510482 -99.23411900000002))
+(define gps-ciencias (GPS 19.3239411016 -99.179806709))
+(define gps-zocalo (GPS 19.432721893261117 -99.13332939147949))
+(define gps-perisur (GPS 19.304135 -99.19001000000003))
+
+(define plaza-satelite (building "Plaza Satelite" gps-satelite))
+(define ciencias (building "Facultad de Ciencias" gps-ciencias))
+(define zocalo (building "Zocalo" gps-zocalo))
+(define plaza-perisur (building "Plaza Perisur" gps-perisur))
+(define plazas (MCons plaza-satelite (MCons plaza-perisur (MEmpty))))
+
+
+;8.-haversine
+
+;9.-gps-coordinates
+
+;10.-closest-building
+
+;11.-building-at-distance
+
+;12.-area
+
+;13.-in-figure?
+
+
 
 
 
