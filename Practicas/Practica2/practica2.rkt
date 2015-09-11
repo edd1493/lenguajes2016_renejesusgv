@@ -12,9 +12,9 @@
 ;(MArreglo 4 (list 1 2 3))
 
 ;2.-LIST
-(define-type MLista
+(define-type MList
   [MEmpty]
-  [MCons(n atom?)(rest MLista?)])
+  [MCons(n atom?)(rest MList?)])
 
 (test (MEmpty) (MEmpty))
 (test (MCons 1 (MCons 2 (MCons 3 (MEmpty)))) (MCons 1 (MCons 2 (MCons 3 (MEmpty)))))
@@ -63,8 +63,14 @@
 ;(setvalueA ar 5 4)
 
 ;2.-MArray2MList
+(define (MArray2MList array)
+  (cond
+    [(or (empty? (MArray-l array)) (= 0 (MArray-n array))) (MEmpty)]
+    [(MCons (car (MArray-l array)) (MArray2MList (MArray (- (MArray-n array) 1) (cdr (MArray-l array)))))]))
 
-
+(test (MArray2MList (MArray 0 '())) (MEmpty))
+(test (MArray2MList (MArray 5 '("a" "b"))) (MCons "a" (MCons "b" (MEmpty))))
+(test (MArray2MList (MArray 3 '(1 2 3))) (MCons 1 (MCons 2 (MCons 3 (MEmpty)))))
 
 ;3-PrintML
 (define (printML ml)
@@ -107,8 +113,22 @@
 ;(lengthML (MCons 7 (MCons 4 (MCons 5 (MCons 1 (LVacia))))))
 
 ;6.-mapML
+(define (mapML fun list)
+  (cond
+    [(MEmpty? list) (MEmpty)]
+    [(MCons (fun (MCons-n list)) (mapML fun (MCons-rest list)))]))
+
+(test (mapML add1 (MCons 7 (MCons 4 (MEmpty)))) (MCons 8 (MCons 5 (MEmpty))))
+(test (mapML (lambda (x) (* x x)) (MCons 10 (MCons 3 (MEmpty)))) (MCons 100 (MCons 9 (MEmpty))))
 
 ;7.-Filter
+(define (filterML predicate list)
+  (cond
+    [(MEmpty? list) (MEmpty)]
+    [(eq? (predicate (MCons-n list)) #t) (MCons (MCons-n list) (filterML predicate (MCons-rest list)))]
+    [else (filterML predicate (MCons-rest list))]))
+
+(test (filterML (lambda (x) (not (zero? x))) (MCons 2 (MCons 0 (MCons 1 (MEmpty))))) (MCons 2 (MCons 1 (MEmpty))))
 
 ;---se definen los siguientes tipos de datos y valores-----------
 
