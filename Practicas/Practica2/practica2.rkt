@@ -234,10 +234,14 @@
    (type-case Coordinates loc2
      (GPS (lat2 long2) (distance lat1 long1 lat2 long2))))))
 
-
-
-
 ;9.-gps-coordinates
+(define (gps-coordinates lstplaces)
+  (cond
+    [(MEmpty? lstplaces) (MEmpty)]
+    [(MCons (GPS (GPS-lat (building-loc (MCons-n lstplaces))) (GPS-long (building-loc (MCons-n lstplaces)))) (gps-coordinates (MCons-rest lstplaces)))]))
+
+(test (gps-coordinates (MEmpty)) (MEmpty))
+(test (gps-coordinates plazas)(MCons (GPS 19.510482 -99.23411900000002) (MCons (GPS 19.304135 -99.19001000000003) (MEmpty))))
 
 ;10.-closest-building
 
