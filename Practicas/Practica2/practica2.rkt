@@ -1,4 +1,5 @@
 #lang plai 
+(require racket/math)
 
 ;funcion que nos dice si algo es un atomo de racket
 (define atom?
@@ -12,9 +13,9 @@
 ;(MArreglo 4 (list 1 2 3))
 
 ;2.-LIST
-(define-type MList
+(define-type MLista
   [MEmpty]
-  [MCons(n atom?)(rest MList?)])
+  [MCons(n atom?)(rest MLista?)])
 
 (test (MEmpty) (MEmpty))
 (test (MCons 1 (MCons 2 (MCons 3 (MEmpty)))) (MCons 1 (MCons 2 (MCons 3 (MEmpty)))))
@@ -63,14 +64,8 @@
 ;(setvalueA ar 5 4)
 
 ;2.-MArray2MList
-(define (MArray2MList array)
-  (cond
-    [(or (empty? (MArray-l array)) (= 0 (MArray-n array))) (MEmpty)]
-    [(MCons (car (MArray-l array)) (MArray2MList (MArray (- (MArray-n array) 1) (cdr (MArray-l array)))))]))
 
-(test (MArray2MList (MArray 0 '())) (MEmpty))
-(test (MArray2MList (MArray 5 '("a" "b"))) (MCons "a" (MCons "b" (MEmpty))))
-(test (MArray2MList (MArray 3 '(1 2 3))) (MCons 1 (MCons 2 (MCons 3 (MEmpty)))))
+
 
 ;3-PrintML
 (define (printML ml)
@@ -113,22 +108,8 @@
 ;(lengthML (MCons 7 (MCons 4 (MCons 5 (MCons 1 (LVacia))))))
 
 ;6.-mapML
-(define (mapML fun list)
-  (cond
-    [(MEmpty? list) (MEmpty)]
-    [(MCons (fun (MCons-n list)) (mapML fun (MCons-rest list)))]))
-
-(test (mapML add1 (MCons 7 (MCons 4 (MEmpty)))) (MCons 8 (MCons 5 (MEmpty))))
-(test (mapML (lambda (x) (* x x)) (MCons 10 (MCons 3 (MEmpty)))) (MCons 100 (MCons 9 (MEmpty))))
 
 ;7.-Filter
-(define (filterML predicate list)
-  (cond
-    [(MEmpty? list) (MEmpty)]
-    [(eq? (predicate (MCons-n list)) #t) (MCons (MCons-n list) (filterML predicate (MCons-rest list)))]
-    [else (filterML predicate (MCons-rest list))]))
-
-(test (filterML (lambda (x) (not (zero? x))) (MCons 2 (MCons 0 (MCons 1 (MEmpty))))) (MCons 2 (MCons 1 (MEmpty))))
 
 ;---se definen los siguientes tipos de datos y valores-----------
 
@@ -153,8 +134,28 @@
 (define plaza-perisur (building "Plaza Perisur" gps-perisur))
 (define plazas (MCons plaza-satelite (MCons plaza-perisur (MEmpty))))
 
+(define radio 6378)
+(define Dlat 0)
+(define Dlong 0)
+(define s 0)
+(define x 0)
+(define (distance lat1 long1 lat2 long2) 
+   (set! Dlat (degrees->radians (- lat1 lat2)))
+   (set! Dlong (degrees->radians (- long1 long2)))
+   (set! s (+ (expt (sin (/ Dlat 2)) 2) (* (* (cos lat1) (cos lat1)) (expt (sin (/ Dlong 2)) 2))))
+   (set! x (* 2 (atan (sqrt s)(sqrt (- 1 s)))))
+   (* radio x)
+  )
 
 ;8.-haversine
+(define (haversine loc1 loc2)
+  (type-case Coordinates loc1
+  (GPS (lat1 long1)
+   (type-case Coordinates loc2
+     (GPS (lat2 long2) (distance lat1 long1 lat2 long2))))))
+
+
+
 
 ;9.-gps-coordinates
 
@@ -178,9 +179,8 @@
    (type-case Figure figure
      (Square (point m)(if  )    )
     
-     ))))
+     ))))|#
 
-|#
 
 
 
