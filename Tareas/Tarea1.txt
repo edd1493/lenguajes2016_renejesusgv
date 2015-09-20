@@ -1,0 +1,24 @@
+
+2.- El argumento de Ben es correcto en el ejemplo pero no se cumple siempre, por ejemplo
+en la siguiente expresion FWAE, con whit multiparametrico:
+
+  {with { {x 2 } {y 3}}
+      {with {{x 10}}
+	{with {{y 1} {f {lambda{m} {+ m x}}}}
+	  {with {{x 100}}
+	      {f 1}}}}}
+
+Que devuelve {num 11} con alcance estatico. 
+Y usando el alcance de Ben, devuelve {num 3}.
+
+3.- Forma de Brujin
+    
+ {with {5 
+       {fun {x} {fun {y} { + x y}
+       {3
+   {with {10 
+	 {<1> <1>}
+	 {<0> {with {{ + 10 <2>}
+		    {<1> 0}
+		    {+ {+ <0><0>}<2>}}}}}}}}}}}
+		    
