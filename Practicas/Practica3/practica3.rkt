@@ -11,6 +11,51 @@
           (aerobic (+ rest (* range (+ 0.5 (* 0.1 2)))) (+ rest (-(* range (+ 0.5 (* 0.1 (+ 2 1)))) 1)))
           (anaerobic (+ rest (* range (+ 0.5 (* 0.1 3)))) (+ rest (-(* range (+ 0.5 (* 0.1 (+ 3 1)))) 1)))
           (maximum (+ rest (* range (+ 0.5 (* 0.1 4)))) max))))
+
+(test(zones 70 120)
+     (list
+     (resting 70 94.0)
+     (warm-up 95.0 99.0)
+     (fat-burning 100.0 104.0)
+     (aerobic 105.0 109.0)
+     (anaerobic 110.0 114.0)
+     (maximum 115.0 120)))
+
+(test(zones 70 100)
+     (list
+     (resting 70 84.0)
+     (warm-up 85.0 87.0)
+     (fat-burning 88.0 90.0)
+     (aerobic 91.0 93.0)
+     (anaerobic 94.0 96.0)
+     (maximum 97.0 100)))
+
+(test(zones 80 190)
+     (list
+     (resting 80 134.0)
+     (warm-up 135.0 145.0)
+     (fat-burning 146.0 156.0)
+     (aerobic 157.0 167.0)
+     (anaerobic 168.0 178.0)
+     (maximum 179.0 190)))
+
+(test(zones 60 150)
+     (list
+     (resting 60 104.0)
+     (warm-up 105.0 113.0)
+     (fat-burning 114.0 122.0)
+     (aerobic 123.0 131.0)
+     (anaerobic 132.0 140.0)
+     (maximum 141.0 150)))
+
+(test(zones 80 160)
+     (list
+     (resting 80 119.0)
+     (warm-up 120.0 127.0)
+     (fat-burning 128.0 135.0)
+     (aerobic 136.0 143.0)
+     (anaerobic 144.0 151.0)
+     (maximum 152.0 160)))
           
 ;se define my-zones para los sig ejemplos
 (define my-zones (zones 50 180))
@@ -20,7 +65,7 @@
   (cond
     [(resting? hrz) 'resting]
     [(warm-up? hrz) 'warm-up]
-    [(fat-burning? hrz) 'fat-burning?]
+    [(fat-burning? hrz) 'fat-burning]
     [(aerobic? hrz) 'aerobic]
     [(anaerobic? hrz) 'anaerobic]
     [(maximum? hrz) 'maximum]))
@@ -31,7 +76,12 @@
     [(empty? list-zones) '()]
     [(eq? smb (type-of (car list-zones))) (car list-zones)]
     [else (get-zone smb (cdr list-zones))]))
-      
+
+(test (get-zone 'anaerobic my-zones) (anaerobic 154.0 166.0))
+(test (get-zone 'maximum my-zones) (maximum 167.0 180))
+(test (get-zone 'resting my-zones) (resting 50 114.0))
+(test (get-zone 'aerobic my-zones) (aerobic 141.0 153.0))
+(test (get-zone 'fat-burning my-zones) (fat-burning 128.0 140.0))
 
 (define (between? n1 n2 n3)
   (cond
@@ -54,6 +104,15 @@
     ;[(aux (car list-zones) (car list-frec)) (list (car list-zones) (bpm->zone (cdr list-frec) list-zones))]
     ;[else (bpm->zone (cdr list-frec) (cdr list-zones))]))
     [else (cons (car (filter (lambda (x) (aux? x (car list-frec))) list-zones)) (bpm->zone (cdr list-frec) list-zones))]))
+
+(test (bpm->zone empty my-zones) '())
+(test (bpm->zone '(50 60) my-zones)
+      (list (resting 50 114.0) (resting 50 114.0)))
+(test (bpm->zone '(140 141) my-zones)
+      (list (fat-burning 128.0 140.0) (aerobic 141.0 153.0)))
+(test (bpm->zone '(50 115 180) my-zones)
+      (list (resting 50 114.0) (warm-up 115.0 127.0) (maximum 167.0 180)))
+(test (bpm->zone '(120) my-zones) (list (warm-up 115.0 127.0)))
 
     
 
