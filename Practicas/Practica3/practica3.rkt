@@ -33,7 +33,29 @@
     [else (get-zone smb (cdr list-zones))]))
       
 
+(define (between? n1 n2 n3)
+  (cond
+    [(and (>= n1 n3) (<= n2 n3)) #t]
+    [else #f]))
+
+(define (aux? hrz n)
+  (type-case HRZ hrz
+    (resting (low high) (between? high low n))
+    (warm-up (low high) (between? high low n))
+    (fat-burning (low high) (between? high low n))
+    (aerobic (low high) (between? high low n))
+    (anaerobic (low high) (between? high low n))
+    (maximum (low high) (between? high low n))))
+
 ;3.-bpm->zone
+(define (bpm->zone list-frec list-zones)
+  (cond
+    [(or (empty? list-frec) (empty? list-zones)) '()]
+    ;[(aux (car list-zones) (car list-frec)) (list (car list-zones) (bpm->zone (cdr list-frec) list-zones))]
+    ;[else (bpm->zone (cdr list-frec) (cdr list-zones))]))
+    [else (cons (car (filter (lambda (x) (aux? x (car list-frec))) list-zones)) (bpm->zone (cdr list-frec) list-zones))]))
+
+    
 
 
 
