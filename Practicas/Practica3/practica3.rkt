@@ -2,9 +2,38 @@
 
 (require "practica3-base.rkt")
 
+;1.-zones
+(define (zones rest max)
+  (let ([range (- max rest)])
+    (list (resting rest (+ rest (- (* range (+ 0.5 (* 0.1 0))) 1)))
+          (warm-up (+ rest (* range (+ 0.5 (* 0.1 0)))) (+ rest (-(* range (+ 0.5 (* 0.1 (+ 0 1)))) 1)))
+          (fat-burning (+ rest (* range (+ 0.5 (* 0.1 1)))) (+ rest (-(* range (+ 0.5 (* 0.1 (+ 1 1)))) 1)))
+          (aerobic (+ rest (* range (+ 0.5 (* 0.1 2)))) (+ rest (-(* range (+ 0.5 (* 0.1 (+ 2 1)))) 1)))
+          (anaerobic (+ rest (* range (+ 0.5 (* 0.1 3)))) (+ rest (-(* range (+ 0.5 (* 0.1 (+ 3 1)))) 1)))
+          (maximum (+ rest (* range (+ 0.5 (* 0.1 4)))) max))))
+          
+;se define my-zones para los sig ejemplos
+(define my-zones (zones 50 180))
 
+;función auxiliar que devuelve el tipo de un hrz
+(define (type-of hrz)
+  (cond
+    [(resting? hrz) 'resting]
+    [(warm-up? hrz) 'warm-up]
+    [(fat-burning? hrz) 'fat-burning?]
+    [(aerobic? hrz) 'aerobic]
+    [(anaerobic? hrz) 'anaerobic]
+    [(maximum? hrz) 'maximum]))
 
+;2.-get-zone
+(define (get-zone smb list-zones)
+  (cond
+    [(empty? list-zones) '()]
+    [(eq? smb (type-of (car list-zones))) (car list-zones)]
+    [else (get-zone smb (cdr list-zones))]))
+      
 
+;3.-bpm->zone
 
 
 
