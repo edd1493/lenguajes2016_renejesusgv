@@ -5,7 +5,7 @@
 ### Practica 1
 
 En primes la lista de salida esta en orden inverso al esperado
-Falto implementacion de mpowerset.
+Falto implementación de mpowerset.
 
 **Calificacion: 9**
 
@@ -18,3 +18,10 @@ Les falto implementar closest-building, building-at-distance y in-figure?
 Tambien les falto pruebas en general.
 
 **Calificación: 7**
+
+### Practica 3
+
+Les falto implementar las funciones bpm->zone, create-trackpoints, total-distance, average-hr, max-hr y collapse-trackpoints
+Tambien les falto pruebas en general.
+
+**Calificación: 5**
