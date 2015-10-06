@@ -1,0 +1,94 @@
+\documentclass{article}
+\usepackage[left=2cm,right=2cm,top=3cm,bottom=3cm,letterpaper]{geometry}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{verbatim, array}
+\usepackage{hyperref}
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+
+\newcommand{\gradeone}{(\textbf{1pt}) }
+\newcommand{\grade}[1]{(\textbf{#1pts}) }
+\newcommand{\jimage}[2]{\includegraphics[width=#1\textwidth]{#2}\vskip10pt}
+\newcommand{\jcimage}[2]{\begin{center}\includegraphics[width=#1\textwidth]{#2}\end{center}\vskip10pt}
+
+\author{Profesora: Karla Ramírez Pulido\\
+  Ayudante: Héctor Enrique Gómez Morales}
+\title{Practica 4 - Interprete FAE}
+\date{Fecha de inicio: 23 de septiembre de 2015\\
+  \textbf{Fecha de entrega: 7 de octubre de 2015}}
+\begin{document}
+\maketitle
+\section{Instrucciones}
+
+Para esta práctica, requerirás tomar como base el archivo \texttt{practica4-base.rkt} e implementar las funciones que se solicitan.
+
+El objetivo de esta práctica es hacer un intérprete del lenguaje \texttt{FAE} (Function, Arithmetic Expression) con \emph{ambientes}. Se tendrán dos sintaxis, la primera \texttt{FAES} es una sintaxis que se define explícitamente las expresiones \texttt{with}, y la sintaxis \texttt{FAE} en las que solo se tienen las operaciones aritméticas, definición de funciones y aplicación de funciones.
+
+Usaremos la definición y aplicación de funciones para implementar la funcionalidad del \texttt{with}, dado que:
+\begin{verbatim}
+{with {var named-expr} body}
+
+\end{verbatim}
+
+lo reemplazamos con
+
+\begin{verbatim}
+{{fun {var} body}
+  named-expr}
+\end{verbatim}
+
+Es decir las expresiones \texttt{with} son \emph{syntatic sugar}. Para realizar esto se definirá una función \texttt{desugar} que tomara una expresión en sintaxis \texttt{FAES} a una expresión en sintaxis \texttt{FAE}. Para luego hacer el interprete del árbol de sintaxis abstracta de \texttt{FAE} que debe ser de alcance estático por medio de ambientes.
+
+\begin{verbatim}
+<binop>::= +
+         | -
+         | *
+         | /
+
+<FAES>::= <num>
+         | <id>
+         | {<binop> <FAES> <FAES>}
+         | {with {{<id> <FAES>}+} <FAES>}
+         | {with* {{<id> <FAES>}+} <FAES>}
+         | {fun {<id>*} <FAES>+}
+         | {<FAES> <FAES>*}
+
+<FAE>::= <num>
+         | <id>
+         | {<binop> <FAE> <FAE>}
+         | {fun {<id>*} <FAE>+}
+         | {<FAE> <FAE>*}
+\end{verbatim}
+
+\begin{center}
+\framebox[1.1\width]{\textbf{lexer (source $\rightarrow$ listof tokens)}} $\rightarrow$
+\framebox[1.1\width]{\textbf{parser (listof tokens $\rightarrow$ FAES)}} $\rightarrow$
+\framebox[1.1\width]{\textbf{desugar (FAES $\rightarrow$ FAE))}} $\rightarrow$
+\framebox[1.1\width]{\textbf{interp (FAE $\rightarrow$ FAE-Value))}}
+\end{center}
+
+Esta práctica debe ser implementada con la variante plai, es decir
+su archivo con terminación \textit{.rkt} debe tener como primer linea lo siguiente:
+\texttt{\#lang plai}.
+
+Todos los ejercicios requieren contar con pruebas mediante el uso de
+la función \texttt{test}:
+
+\section{Ejercicios}
+
+\begin{enumerate}
+
+\item \grade{2} \textbf{desugar} Define una función que toma una expresión en sintaxis \texttt{FAES} y que regresa una expresión en sintaxis \texttt{FAE}.
+
+\item \grade{3} \textbf{multi-param} Adecua el \texttt{interp} de tal manera que las funciones acepten una lista de parámetros y que las aplicaciones de funciones sean de múltiples argumentos.
+
+\item \grade{3} \textbf{with*} Adecua a \texttt{desugar} de tal manera que se tenga expresiones \texttt{with*} que tienen la misma semántica de \texttt{let*} de Racket, en donde cada \texttt{named-expr} es evaluada una a una y se crea inmediatamente el \textit{binding} con el valor obtenido.
+
+\item \grade{2} \textbf{interp} En base al código de \texttt{p4-base.rkt}, implementar el intérprete, dado un árbol de sintaxis abstracta, evaluar y regresar un valor de tipo \texttt{FAE-Value} que considera las variantes numV y closureV. closureV es el constructor de tipo que recibe un parámetro, tiene un cuerpo de tipo \texttt{FAE} y un ambiente de tipo Env. Env considera las variantes de tipo mtSub y aSub, donde el constructor aSub recibe un símbolo, un valor de tipo \texttt{FAE-Value} y otro ambiente Env.
+
+\end{enumerate}
+
+\end{document}
