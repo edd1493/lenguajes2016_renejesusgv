@@ -6,7 +6,33 @@
 
 (define (desugar expr)
   ;; Implementar desugar
-  (error 'desugar "Not implemented"))
+(define (desugar expr)
+  (type-case FAES expr
+    [numS (n) (num n)]
+    [idS (v) (id v)]
+    [binopS (f l r) (binop f (desugar l) (desugar r))]
+    [withS (bindings body) (app (fun (get-Name bindings) (desugar body)) (get-Value bindings))]
+    [with*S (bindings body) (app (fun (get-Name bindings) (desugar body)) (get-Value bindings))]
+    [funS (params body) (fun params (desugar body))]
+    [appS (funS args) (app (desugar funS) (get-FAE args))]))
+    
+  (define (get-Name ds)
+  (cond
+    [(empty? ds) empty]
+    [else  (type-case Binding (car ds)
+        [bind (name val) (cons name (get-Name (cdr ds)))])]))
+
+  (define (get-Value ds)
+    (cond
+      [(empty? ds) empty]
+      [else (type-case Binding (car ds)
+          [bind (name val) (cons (desugar val) (get-Value (cdr ds)))])]))
+
+  (define (get-FAE ds)
+  (if (empty? ds)
+      '()
+      (cons (desugar (car ds)) (get-FAE (cdr ds))))) 
+
 
 
 (test (desugar (parse '{+ 3 4})) (binop + (num 3) (num 4)))
