@@ -6,7 +6,6 @@
 
 (define (desugar expr)
   ;; Implementar desugar
-(define (desugar expr)
   (type-case FAES expr
     [numS (n) (num n)]
     [idS (v) (id v)]
@@ -29,8 +28,7 @@
           [bind (name val) (cons (desugar val) (get-Value (cdr ds)))])]))
 
   (define (get-FAE ds)
-  (if (empty? ds)
-      '()
+  (if (empty? ds) empty
       (cons (desugar (car ds)) (get-FAE (cdr ds))))) 
 
 
