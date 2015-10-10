@@ -1,9 +1,10 @@
 Problema I
 En teoría y laboratorio hemos visto el lenguaje FAE, que es un lenguaje con expresiones aritméticas, funciones y
 aplicaciones de funciones. ¿Es FAE un lenguaje Turing-Completo?. Debes proveer una respuesta breve e inambigua,
-seguida de una justificación  mas extensa de tu respuesta. Hint: Investiguen sobre el combinador Y
+seguida de una justificación  mas extensa de tu respuesta. Hint: Investiguen sobre el combinador Y.
 
-
+FAE si es un lenguaje turing completo ya que  como se define FAE es  un lenguaje funcional por lo cual se puede utilizar recusividad y funciones de alto orden con esto se puede generar lo que es el combinador Y, el cual  expresa recusividad
+sin hacer llamadas recursivas, los sistemas turing completo son aquellos que se pueden generar en una  cinta infinita sin que esta llegue a un estado final ya que por definicion los programas que tienen un periodo de tiempo fijo no son turing completos, entonces al poder generar recursividad, funciones y en especifico if "ciclo", como se puede generar un ciclo no finito  que puede ser aceptado por una maquina universal de turing  tomando la analogia de que un sistema turing completo puede ser emulado por una maquina universal de Turing entonces se llega a que FAE si es un Turing completo gracias al combinador Y.
 
 
 
