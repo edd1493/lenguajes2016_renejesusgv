@@ -25,3 +25,15 @@ Les falto implementar las funciones bpm->zone, create-trackpoints, total-distanc
 Tambien les falto pruebas en general.
 
 **Calificación: 5**
+
+## Tareas
+
+### Tarea 2
+
+Problema 1: Su redacción al principio parece indicar que FAE tiene recursidad y que con eso se puede definir el combinador Y en FAE después ya dan una explicación tengan cuidado con eso.
+
+Problema 2: Java como dicen es glotón pero su ejemplo es ortogonal a que el
+lenguaje sea perezoso o glotón, aun en haskell al tratar de imprimir a se
+tendría que hacer la evaluación de la función factorial.
+
+**Calificación: 4**
