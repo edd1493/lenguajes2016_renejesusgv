@@ -11,9 +11,15 @@
     [idS (v) (id v)]
     [binopS (f l r) (binop f (desugar l) (desugar r))]
     [withS (bindings body) (app (fun (get-Name bindings) (desugar body)) (get-Value bindings))]
-    [with*S (bindings body) (app (fun (get-Name bindings) (desugar body)) (get-Value bindings))]
+    [with*S (bindings body) (aux bindings body)]; with arreglado se utiliza funcion auxiliar 
     [funS (params body) (fun params (desugar body))]
     [appS (funS args) (app (desugar funS) (get-FAE args))]))
+    
+ ;funcion auxiliar para with*
+(define (aux bindings body)
+   (if (empty? bindings)
+                (desugar body)
+                (desugar (withS (list (car bindings)) (with*S (cdr bindings) body)))))
     
   (define (get-Name ds)
   (cond
