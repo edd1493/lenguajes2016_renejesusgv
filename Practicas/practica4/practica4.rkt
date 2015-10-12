@@ -46,9 +46,24 @@
 (define (cparse sexp)
   (desugar (parse sexp)))
 
-(define (interp expr env)
-  ;; Implementar interp
-  (error 'interp "Not implemented"))
+;interp
+(define (interp expr ds)
+  (type-case FAE expr
+   [num (n) (numV n)]
+   [binop (f l r) (opV f (interp l ds) (interp r ds))]
+   [id (v) (lookup v ds)]
+   [fun (params body) (closureV params body ds)]
+   [app ()
+
+
+;look up para interp (shiram)
+(define (lookup name ds)
+  (type-case Env ds
+    [mtSub () (error  'lookup "no binding for identifier" )]
+    [aSub (bound-name bound-value rest-ds)
+            (if (symbol=? bound-name name)
+                 bound-value
+                  (lookup name rest-ds))]))
 
 (define (rinterp expr)
   (interp expr (mtSub)))
