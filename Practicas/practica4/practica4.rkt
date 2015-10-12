@@ -50,11 +50,19 @@
 (define (interp expr ds)
   (type-case FAE expr
    [num (n) (numV n)]
-   [binop (f l r) (opV f (interp l ds) (interp r ds))]
+   [binop (f l r) (numV (f (numV-n (interp l ds)) (numV-n (interp r ds))))]
    [id (v) (lookup v ds)]
    [fun (params body) (closureV params body ds)]
-   [app ()
-
+   [app (fun args)
+         (local([define funV (interp fun ds)])
+           (if (closureV? funV)
+               (let* ([funV-params (closureV-param funV)]
+                      [nparams (length funV-params)]
+                      [nargs (length args)])
+                 (interp (closureV-body funV)
+                         (if (= nparams nargs) (mParam funV-params args ds (closureV-env funV))
+                         (error 'interp (~a "Arity mismatch")))))
+           (error 'interp (string-append (~a funV) "Invalid Expresion"))))]))
 
 ;look up para interp (shiram)
 (define (lookup name ds)
@@ -64,6 +72,12 @@
             (if (symbol=? bound-name name)
                  bound-value
                   (lookup name rest-ds))]))
+;;Aux Fun for multi param app
+(define (mParam params args args-ds a-ds)
+  (if (empty? params) a-ds
+      (mParam (cdr params) (cdr args) args-ds
+                   (aSub (car params)
+                         (interp (car args) args-ds) a-ds))))
 
 (define (rinterp expr)
   (interp expr (mtSub)))
