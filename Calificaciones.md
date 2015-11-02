@@ -26,7 +26,21 @@ Tambien les falto pruebas en general.
 
 **Calificación: 5**
 
+### Practica 4
+
+Muy bien.
+
+**Calificación: 10**
+
 ## Tareas
+
+### Tarea 1
+
+Problema 1: No lo hicieron.
+Problema 2: Bien
+Problema 3: Son incorrectas las coordenadas léxicas.
+
+**Calificación: 4**
 
 ### Tarea 2
 
